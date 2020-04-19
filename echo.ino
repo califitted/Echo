@@ -5,6 +5,7 @@
 #include "switch.h"
 #include "UpnpBroadcastResponder.h"
 #include "CallbackFunction.h"
+#include "config.h"
 
 //final working code for Nodemcu v3 and compatible for 8 Channel Power Relay..
 //fb.com/insider7enjoy
@@ -14,7 +15,7 @@
 // prototypes
 boolean connectWifi();
 
-//on/off callbacks 
+//on/off callbacks
 void lightOneOn();
 void lightOneOff();
 void lightTwoOn();
@@ -62,15 +63,15 @@ int relayEight = 15;
 
 void setup()
 {
- 
+
  Serial.begin(115200);
-   
+
   // Initialise wifi connection
   wifiConnected = connectWifi();
-  
+
   if(wifiConnected){
     upnpBroadcastResponder.beginUdpMulticast();
-    
+
     // Define your switches here. Max 14
     // Format: Alexa invocation name, local port no, on callback, off callback
     lightOne = new Switch("Light One", 80, lightOneOn, lightOneOff);
@@ -86,12 +87,12 @@ void setup()
     upnpBroadcastResponder.addDevice(*lightOne);
     upnpBroadcastResponder.addDevice(*lightTwo);
     upnpBroadcastResponder.addDevice(*lightThree);
-    upnpBroadcastResponder.addDevice(*lightFour);    
+    upnpBroadcastResponder.addDevice(*lightFour);
     upnpBroadcastResponder.addDevice(*outletOne);
     upnpBroadcastResponder.addDevice(*outletTwo);
     upnpBroadcastResponder.addDevice(*outletThree);
     upnpBroadcastResponder.addDevice(*outletFour);
-    
+
     //relay pins setup i Used D1,D2,D3,D4,D5,D6,D7,D8 followed as assigned below, if you are willing to change Pin or planning to use extra please Check Image in Github File..:)
     pinMode (5, OUTPUT);
     pinMode (4, OUTPUT);
@@ -111,12 +112,12 @@ void setup()
     digitalWrite (15,LOW);
   }
 }
- 
+
 void loop()
 {
 	 if(wifiConnected){
       upnpBroadcastResponder.serverLoop();
-      
+
       lightOne->serverLoop();
       lightTwo->serverLoop();
       lightThree->serverLoop();
@@ -214,7 +215,7 @@ void outletFourOn() {
 boolean connectWifi(){
   boolean state = true;
   int i = 0;
-  
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -231,7 +232,7 @@ boolean connectWifi(){
     }
     i++;
   }
-  
+
   if (state){
     Serial.println("");
     Serial.print("Connected to ");
@@ -243,6 +244,6 @@ boolean connectWifi(){
     Serial.println("");
     Serial.println("Connection failed.");
   }
-  
+
   return state;
 }
