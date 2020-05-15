@@ -61,8 +61,7 @@ int relaySeven = 13;
 int relayEight = 15;
 
 
-void setup()
-{
+void setup() {
 
  Serial.begin(115200);
 
